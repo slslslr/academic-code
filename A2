@@ -1,0 +1,52 @@
+import pandas as pd
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+# Load the dataset
+df = pd.read_csv("/Users/Lairun/Desktop/Earnings_and_Height.csv")
+# Calculate the mean values of height and earnings
+mean_height = df['height'].mean()
+mean_earnings = df['earnings'].mean()
+# Print the mean values, rounded to two decimal places
+print(f"Mean Height: {mean_height:.2f} inches")
+print(f"Mean Earnings: ${mean_earnings:.2f}")
+# Create a scatter plot
+plt.figure(figsize=(10, 6))
+plt.scatter(df['height'], df['earnings'], alpha=0.5)
+plt.title('Scatter Plot of Annual Earnings on Height')
+plt.xlabel('Height (inches)')
+plt.ylabel('Annual Earnings (2012 dollars)')
+plt.grid(True)
+plt.show()
+# Perform the linear regression
+model = smf.ols(formula='earnings ~ height', data=df).fit()
+# Get and print the regression summary
+print(model.summary())
+# Get the sample size, R-squared, and estimated slope (coefficient of Height)
+sample_size = len(df)
+r_squared = model.rsquared
+slope = model.params['height']
+# Print the results
+print(f"Sample Size: {sample_size}")
+print(f"R-squared: {r_squared:.4f}")
+print(f"Estimated Slope: {slope:.2f}")
+# Predict earnings for a worker who is 70 inches tall and print the result
+predicted_earnings_70_inches = model.predict(pd.DataFrame({'height': [70]}))[0]
+print(f"Predicted Earnings for a 70-inch-tall Worker: ${predicted_earnings_70_inches:.2f})
+# Filter the dataset for female workers only
+df_female = df[df['sex'] == 0]
+# Perform the linear regression with the filtered data
+model_female = smf.ols(formula='earnings ~ height', data=df_female).fit()
+# Print the regression summary
+print(model_female.summary())
+# Get the sample size, R-squared, and estimated slope (coefficient of Height)
+sample_size_female = len(df_female)
+r_squared_female = model_female.rsquared
+slope_female = model_female.params['height']
+# Print the results
+print(f"Sample Size: {sample_size_female}")
+print(f"R-squared: {r_squared_female:.4f}")
+print(f"Estimated Slope: {slope_female:.2f}")
+# Calculate the predicted difference in earnings for a woman who is 1 inch taller than 
+# Since the difference in height is 1 inch, the difference in earnings is equal to the 
+predicted_earnings_difference = slope_female
+print(f"Predicted Earnings Difference for a Woman 1 Inch Taller than Average: ${predict
